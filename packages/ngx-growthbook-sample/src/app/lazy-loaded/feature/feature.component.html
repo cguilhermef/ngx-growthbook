@@ -1,2 +1,7 @@
-<h4>Lazy-loaded feature</h4>
-<p>Feature is on? <strong>{{ featureIsOn$ | async }}</strong></p>
+<h4>Lazy-loaded component</h4>
+<ngx-gb-feature-show featureKey="hello-world-simple" default="hide">
+  Lazy component | It will be showed when the feature is <strong>enabled</strong>.
+</ngx-gb-feature-show>
+<ngx-gb-feature-hide featureKey="hello-world-simple" default="show">
+  Lazy component | It will be showed when the feature is <strong>disabled</strong>.
+</ngx-gb-feature-hide>

@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "ngx-growthbook": ["packages/ngx-growthbook/src/index.ts"],
-      "env": ["./env.json"]
+      "env": ["./env.json"],
+      "ngx-growthbook": ["packages/ngx-growthbook/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

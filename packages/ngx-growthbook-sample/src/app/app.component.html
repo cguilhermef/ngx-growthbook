@@ -1,6 +1,15 @@
 <h3>App</h3>
-<p>Feature is on? <strong>{{ featureIsOn$ | async }}</strong></p>
-<button (click)="update()">Update</button>
+<ngx-gb-feature-show featureKey="hello-world-simple" default="hide">
+  APP | It will be showed when the feature is <strong>enabled</strong>.
+</ngx-gb-feature-show>
+<ngx-gb-feature-hide featureKey="hello-world-simple" default="hide">
+  APP | It will be showed when the feature is <strong>disabled</strong>.
+</ngx-gb-feature-hide>
+<br>
+<br>
+<button (click)="update()">Update features</button>
+<br>
+<br>
+<a routerLink="lazy-module">Navigate to lazy-loaded component</a>
 <hr>
-<a routerLink="lazy-module">Load lazy module</a>
 <router-outlet></router-outlet>

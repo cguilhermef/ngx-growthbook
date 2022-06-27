@@ -1,23 +1,19 @@
 import {Inject, Injectable, InjectionToken} from '@angular/core';
-import {GrowthBook, Attributes, FeatureDefinition } from "@growthbook/growthbook";
+import {GrowthBook, FeatureDefinition } from "@growthbook/growthbook";
 import {HttpClient} from "@angular/common/http";
 import {
   BehaviorSubject,
   catchError,
-  filter,
   first,
   map,
-  Observable,
-  of,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
+  Observable, ReplaySubject, Subject,
+  take, tap,
   throwError
 } from "rxjs";
+import { FeatureValType } from './types';
+
 export const GROWTHBOOK_CONFIG = new InjectionToken<GrowthbookConfig>('growthbook-service GROWTHBOOK_CONFIG');
 
-type FeatureValType = string | number | boolean | null;
 export interface GrowthBookFeatures {
   status: number;
   features: {[key: string]: FeatureDefinition};
@@ -31,9 +27,8 @@ export interface GrowthbookConfig {
   providedIn: 'root'
 })
 export class GrowthBookService {
-  private static loaded = false;
-  private static growthBook$ = new BehaviorSubject<GrowthBook>(new GrowthBook());
 
+  private gb$ = new BehaviorSubject<GrowthBook>(new GrowthBook());
   constructor(
     @Inject(GROWTHBOOK_CONFIG) private config: GrowthbookConfig,
     private http: HttpClient
@@ -46,30 +41,27 @@ export class GrowthBookService {
     ).pipe(
       first(),
       map((response) => {
-        const growthBook = new GrowthBook();
-        growthBook.setFeatures(response.features);
-        GrowthBookService.growthBook$.next(growthBook);
-        GrowthBookService.loaded = true;
+        this.gb$.value.setFeatures(response.features);
+        this.gb$.next(this.gb$.value);
       }),
       catchError((err) => throwError(err))
     )
   }
 
   setAttributes(attributes: {[key: string]: FeatureValType}): Observable<void> {
-    return GrowthBookService.growthBook$.pipe(
+    return this.gb$.pipe(
       map((gb) => gb.setAttributes(attributes))
     );
   }
 
   featureIsOn(feature: string): Observable<boolean> {
-    return GrowthBookService.growthBook$.pipe(
+    return this.gb$.pipe(
       map((gb) => gb.isOn(feature))
     )
   }
 
   featureIsOff(feature: string): Observable<boolean> {
-    return GrowthBookService.growthBook$.pipe(
-      take(2),
+    return this.gb$.pipe(
       map((gb) => gb.isOff(feature))
     )
   }
