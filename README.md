@@ -1,4 +1,4 @@
-# NgxGrowthbook
+# NgxGrowthBook
 
 This project was generated using [Nx](https://nx.dev) and is heavily based on the [Weiyuan Lane](https://weiyuan-lane.github.io/)'s [growthbook-remote-config](https://github.com/Weiyuan-Lane/growthbook-remote-config) project.
 
