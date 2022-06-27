@@ -1,7 +1,7 @@
 {
   "projectType": "library",
   "sourceRoot": "packages/ngx-growthbook/src",
-  "prefix": "NgxGB",
+  "prefix": "ngx-gb",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
