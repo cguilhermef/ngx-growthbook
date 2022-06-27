@@ -8,13 +8,22 @@ import {GrowthBookService} from "ngx-growthbook";
 })
 export class AppComponent {
   featureIsOn$ = this.gbService.featureIsOn('hello-world-simple');
-
+  userId = 301879;
   constructor(
     private gbService: GrowthBookService
   ) {
+    this.gbService.setAttributes({
+      userId: this.userId
+    })
   }
 
   update() {
-    this.gbService.updateFeatures().subscribe()
+    this.gbService.updateFeatures().subscribe();
+  }
+
+  changeAttributes() {
+    this.gbService.setAttributes({
+      userId: ++this.userId
+    });
   }
 }

@@ -3,10 +3,10 @@ import {GrowthBook, FeatureDefinition } from "@growthbook/growthbook";
 import {HttpClient} from "@angular/common/http";
 import {
   BehaviorSubject,
-  catchError,
+  catchError, EMPTY,
   first,
   map,
-  Observable, ReplaySubject, Subject,
+  Observable, of, ReplaySubject, startWith, Subject, switchMap,
   take, tap,
   throwError
 } from "rxjs";
@@ -27,8 +27,8 @@ export interface GrowthbookConfig {
   providedIn: 'root'
 })
 export class GrowthBookService {
-
-  private gb$ = new BehaviorSubject<GrowthBook>(new GrowthBook());
+  private gb = new GrowthBook();
+  private update$ = new BehaviorSubject<GrowthBook>(this.gb);
   constructor(
     @Inject(GROWTHBOOK_CONFIG) private config: GrowthbookConfig,
     private http: HttpClient
@@ -41,29 +41,29 @@ export class GrowthBookService {
     ).pipe(
       first(),
       map((response) => {
-        this.gb$.value.setFeatures(response.features);
-        this.gb$.next(this.gb$.value);
+        this.gb.setFeatures(response.features);
+        this.update$.next(this.gb);
       }),
       catchError((err) => throwError(err))
     )
   }
 
-  setAttributes(attributes: {[key: string]: FeatureValType}): Observable<void> {
-    return this.gb$.pipe(
-      map((gb) => gb.setAttributes(attributes))
-    );
+  setAttributes(attributes: {[key: string]: FeatureValType}) {
+    this.gb.setAttributes(attributes);
+    this.update$.next(this.gb);
   }
 
   featureIsOn(feature: string): Observable<boolean> {
-    return this.gb$.pipe(
+    return this.update$.pipe(
+      tap((gb) => console.log(gb.getAttributes())),
       map((gb) => gb.isOn(feature))
-    )
+    );
   }
 
   featureIsOff(feature: string): Observable<boolean> {
-    return this.gb$.pipe(
+    return this.update$.pipe(
       map((gb) => gb.isOff(feature))
-    )
+    );
   }
 
   private endpoint(): string {

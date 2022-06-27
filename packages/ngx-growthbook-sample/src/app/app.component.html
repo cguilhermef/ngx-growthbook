@@ -5,9 +5,13 @@
 <ngx-gb-feature-hide featureKey="hello-world-simple" default="hide">
   APP | It will be showed when the feature is <strong>disabled</strong>.
 </ngx-gb-feature-hide>
+<ngx-gb-feature-show featureKey="hello-world-targeted" default="hide">
+  APP | It will be showed when the userId attribute is 1234
+</ngx-gb-feature-show>
 <br>
 <br>
 <button (click)="update()">Update features</button>
+<button (click)="changeAttributes()">Change Attributes</button>
 <br>
 <br>
 <a routerLink="lazy-module">Navigate to lazy-loaded component</a>
