@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "ngx-growthbook": "packages/ngx-growthbook",
+    "ngx-growthbook-sample": "packages/ngx-growthbook-sample"
+  }
+}

@@ -1,0 +1,6 @@
+<h3>App</h3>
+<p>Feature is on? <strong>{{ featureIsOn$ | async }}</strong></p>
+<button (click)="update()">Update</button>
+<hr>
+<a routerLink="lazy-module">Load lazy module</a>
+<router-outlet></router-outlet>
